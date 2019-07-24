@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { createSpotifyToken } from '../../services/spotify';
+import { createSpotifyToken } from '../../services/spotify/token';
 
 export const spotifyLogin: RequestHandler = async (req, res) => {
   const { code, state } = req.body;

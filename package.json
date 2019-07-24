@@ -35,6 +35,7 @@
       "prettier/@typescript-eslint"
     ],
     "rules": {
+      "@typescript-eslint/camelcase": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/indent": [
         "error",
