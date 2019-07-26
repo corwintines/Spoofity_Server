@@ -4,8 +4,8 @@ import { spotifyLogin } from './spotify/login';
 
 export default function registerRoutes(app: Express) {
   // Spotify
-  app.get('spotify/authorize', spotifyAuthorize);
-  app.post('spotify/login', spotifyLogin);
+  app.get('/spotify/authorize', spotifyAuthorize);
+  app.get('/spotify/login', spotifyLogin);
 
   // Apple Music
   // $$$$$

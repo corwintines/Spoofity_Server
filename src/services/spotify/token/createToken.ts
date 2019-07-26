@@ -5,6 +5,7 @@ import {
   AUTHORIZE_CALLBACK_URL
 } from '../../../const';
 import { SpotifyToken } from '../types';
+import fetch from 'node-fetch';
 
 export async function createSpotifyToken(code: string) {
   const params = new URLSearchParams();
