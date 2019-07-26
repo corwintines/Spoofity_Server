@@ -1,6 +1,11 @@
 import { Express } from 'express';
+
+// Spotify
 import { spotifyAuthorize } from './spotify/authorize';
 import { spotifyLogin } from './spotify/login';
+
+// App
+import { search } from './search';
 
 export default function registerRoutes(app: Express) {
   // Spotify
@@ -11,4 +16,5 @@ export default function registerRoutes(app: Express) {
   // $$$$$
 
   // App
+  app.get('/search', search);
 }
