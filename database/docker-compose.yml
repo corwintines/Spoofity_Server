@@ -7,7 +7,7 @@ services:
         environment:
             - POSTGRES_DB=playlist
             - POSTGRES_USER=admin
-            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD} 
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password} 
         ports:
             - 5432:5432
 

@@ -5,6 +5,11 @@ CREATE TYPE music_service AS ENUM (
   'spotify'
 );
 
+CREATE TABLE request (
+  request_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  created_date timestamptz NOT NULL DEFAULT now()
+);
+
 CREATE TABLE auth (
   auth_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   service music_service NOT NULL,
@@ -14,7 +19,7 @@ CREATE TABLE auth (
   expiry_date timestamptz NOT NULL
 );
 
-CREATE OR REPLACE FUNCTION generateUniqueRoomCode(arg_length integer) 
+CREATE OR REPLACE FUNCTION generate_unique_room_code(arg_length integer) 
   RETURNS text
 AS $$
 DECLARE
@@ -31,7 +36,7 @@ BEGIN
     -- Check to make sure the code is unique
     SELECT NOT EXISTS(
       SELECT true
-      FROM playlist
+      FROM room
       WHERE room_code = generated_code
     ) INTO is_unique;
     EXIT WHEN is_unique;
