@@ -5,13 +5,26 @@ import {
   getSpotifyUser
 } from '../../services/spotify';
 import { CLIENT_URL } from '../../const';
-import { transaction, querySingle } from '../../services/database';
+import { transaction, querySingle, query } from '../../services/database';
 
 export const spotifyLogin: RequestHandler = async (req, res) => {
   const { code, state } = req.query;
 
   try {
     // TODO: check state is a valid requestId
+
+    const result = await querySingle(
+      `
+      DELETE FROM request
+      WHERE request_id = $1
+      AND created_date > now() - interval '30 seconds'
+      RETURNING request_id
+    `,
+      [state]
+    );
+    if (!result) {
+      throw new Error('Invalid request state');
+    }
 
     // Get spotify auth token
     const token = await createSpotifyToken(code);
@@ -31,7 +44,7 @@ export const spotifyLogin: RequestHandler = async (req, res) => {
           $1,
           $2,
           $3,
-          now() + 'interval $4 seconds'
+          now() + CAST($4 || ' seconds' AS interval)
         )
         RETURNING auth_id;
       `,
@@ -48,11 +61,14 @@ export const spotifyLogin: RequestHandler = async (req, res) => {
       }
 
       // Generate room code
-      const roomCode = await querySingle(
-        'SELECT generateUniqueRoomCode FROM generateUniqueRoomCode(4)',
+      const roomCode = await querySingle<{ room_code: string }>(
+        'SELECT generate_unique_room_code as room_code FROM generate_unique_room_code(4)',
         undefined,
         client
-      );
+      ).then((result) => {
+        if (!result) return result;
+        return result.room_code;
+      });
       if (!roomCode) {
         throw new Error('Failure creating room code');
       }
@@ -92,6 +108,8 @@ export const spotifyLogin: RequestHandler = async (req, res) => {
 
       return roomCode;
     });
+
+    console.log('Created room', roomCode);
 
     // Redirect user to the playlist
     res.redirect(302, `${CLIENT_URL}/${roomCode}`);
