@@ -1,5 +1,5 @@
 import { SPOTIFY_API_URL } from '../../../const';
-import { SpotifyTokenType } from '../types';
+import { SpotifyTokenType, SpotifySearchResult } from '../types';
 import { spotifyFetch } from '../fetch';
 
 interface QuerySpotifySearchParameters {
@@ -12,12 +12,9 @@ interface QuerySpotifySearchParameters {
 
 export async function querySpotifySearch(
   args: QuerySpotifySearchParameters
-): Promise<any> {
+): Promise<SpotifySearchResult> {
   const url = new URL(`${SPOTIFY_API_URL}/search`);
-  url.searchParams.append(
-    'type',
-    ['album', 'artist', 'playlist', 'track'].join(',')
-  );
+  url.searchParams.append('type', ['album', 'artist', 'track'].join(','));
   url.searchParams.append('market', 'from_token');
   url.searchParams.append('q', encodeURIComponent(args.query));
   url.searchParams.append('limit', args.limit.toString()); // 1 - 50

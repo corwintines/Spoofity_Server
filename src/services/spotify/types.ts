@@ -42,18 +42,68 @@ export interface SpotifyPaging<T> {
   previous: string;
 }
 
-export interface SpotifyTrack {
-  id: string;
-  album: object;
-  artists: object[];
-  name: string;
-  track_number: number;
-  preview_url: string;
-  popularity: number;
+export interface SpotifySearchResult {
+  artists: SpotifyPaging<SpotifyArtist>;
+  albums: SpotifyPaging<SpotifyAlbumSimplified>;
+  tracks: SpotifyPaging<SpotifyTrack>;
+}
+
+export interface SpotifyTrackSimplified {
+  artists: SpotifyArtistSimplified[];
+  available_markets: string[];
+  disc_number: number;
   duration_ms: number;
   explicit: boolean;
-  is_local: boolean;
+  external_urls: object;
+  href: string;
+  id: string;
   is_playable: boolean;
+  linked_from: object;
+  restrictions: object;
+  name: string;
+  preview_url: string;
+  track_number: number;
+  type: 'track';
+  uri: string;
+  is_local: boolean;
+}
+
+export interface SpotifyTrack extends SpotifyTrackSimplified {
+  album: object;
+  external_ids: object;
+  popularity: number;
+}
+
+export interface SpotifyArtistSimplified {
+  external_urls: object;
+  href: string;
+  id: string;
+  name: string;
+  type: 'artist';
+  uri: string;
+}
+
+export interface SpotifyArtist extends SpotifyArtistSimplified {
+  followers: object;
+  genres: string[];
+  images: object[];
+  popularity: number;
+}
+
+export interface SpotifyAlbumSimplified {
+  album_group?: string;
+  album_type: string;
+  artists: SpotifyArtistSimplified[];
+  available_markets: string[];
+  href: string;
+  id: string;
+  images: object[];
+  name: string;
+  release_date: string;
+  release_date_precision: string;
+  restrictions: object;
+  type: 'album';
+  uri: string;
 }
 
 export interface SpotifyPlaylistTrack {
