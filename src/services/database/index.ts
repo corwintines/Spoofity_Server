@@ -16,7 +16,7 @@ export async function connect<T>(
     const result = await queryFunction(client);
     return result;
   } finally {
-    client.release();
+    if (!transaction) client.release();
   }
 }
 

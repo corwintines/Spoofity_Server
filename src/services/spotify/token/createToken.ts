@@ -6,6 +6,7 @@ import {
 } from '../../../const';
 import { SpotifyToken } from '../types';
 import fetch from 'node-fetch';
+import { URLSearchParams } from 'url';
 
 export async function createSpotifyToken(code: string) {
   const params = new URLSearchParams();
@@ -19,6 +20,7 @@ export async function createSpotifyToken(code: string) {
     method: 'POST',
     body: params
   });
+
   const json = await result.json();
 
   if (!result.ok) {
