@@ -1,5 +1,6 @@
 import { SPOTIFY_API_URL } from '../../../const';
 import { SpotifyTokenType, SpotifyPlaylist } from '../types';
+import { spotifyFetch } from '../fetch';
 
 interface GetSpotifyPlaylistParameters {
   token: string;
@@ -14,7 +15,7 @@ export async function getSpotifyPlaylist(
   url.searchParams.append('fields', ['id', 'snapshot_id'].join(','));
   url.searchParams.append('market', 'from_token');
 
-  const result = await fetch(url.href, {
+  const result = await spotifyFetch(url.href, {
     method: 'GET',
     headers: {
       Authorization: `${args.tokenType} ${args.token}`,

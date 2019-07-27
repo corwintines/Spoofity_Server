@@ -1,5 +1,6 @@
 import { SPOTIFY_API_URL } from '../../../const';
 import { SpotifyTokenType } from '../types';
+import { spotifyFetch } from '../fetch';
 
 interface QuerySpotifySearchParameters {
   token: string;
@@ -22,7 +23,7 @@ export async function querySpotifySearch(
   url.searchParams.append('limit', args.limit.toString()); // 1 - 50
   url.searchParams.append('offset', args.offset.toString()); // 0 - 10,000
 
-  const result = await fetch(url.href, {
+  const result = await spotifyFetch(url.href, {
     method: 'GET',
     headers: {
       Authorization: `${args.tokenType} ${args.token}`
