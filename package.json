@@ -11,7 +11,7 @@
     "test": "npm run test:once -- --watchAll",
     "build": "tsc",
     "start": "ts-node src",
-    "db:build": "docker build -t playlist_db:latest ./database",
+    "predb:up": "docker build -t playlist_db:latest ./database",
     "db:up": "docker-compose -f ./database/docker-compose.yml up",
     "db:down": "docker-compose -f ./database/docker-compose.yml down"
   },

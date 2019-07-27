@@ -33,16 +33,26 @@ export async function transaction<T>(queryFunction: QueryFunction<T>) {
   }
 }
 
-export async function query(
-  query: string,
+export async function query<T = any>(
+  queryStr: string,
   values?: any[],
   transaction?: PoolClient
 ) {
   return await connect(
     async (client) => {
-      const { rows } = await client.query(query, values);
-      return rows;
+      const { rows } = await client.query(queryStr, values);
+      return rows as T[];
     },
     transaction
   );
+}
+
+export async function querySingle<T = any>(
+  queryStr: string,
+  values?: any[],
+  transaction?: PoolClient
+) {
+  const result = await query(queryStr, values, transaction);
+  if (!result || !result.length) return undefined;
+  return result[0] as T;
 }
