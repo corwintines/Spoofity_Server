@@ -15,6 +15,7 @@ export const CLIENT_URL = process.env.CLIENT_URL as string;
 
 // https://developer.spotify.com/documentation/general/guides/scopes/
 export const SPOTIFY_SCOPES = [
+  'user-read-private',
   'playlist-read-private',
   'playlist-modify-private',
   'playlist-read-collaborative',
