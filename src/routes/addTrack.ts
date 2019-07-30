@@ -3,7 +3,7 @@ import { querySingle } from '../services/database';
 import { AuthSchema, RoomSchema } from '../services/database/types';
 import { addSpotifyPlaylistTracks } from '../services/spotify';
 
-export const search: RequestHandler = async (req, res) => {
+export const addTrack: RequestHandler = async (req, res) => {
   const { room, track_uris } = req.query;
 
   try {
