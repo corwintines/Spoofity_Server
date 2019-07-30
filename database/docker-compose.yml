@@ -1,15 +1,13 @@
 version: "3.7"
 
 services:
-    conquer_db:
-        image: postgres:11
+    playlist_db:
+        image: playlist_db:latest
         restart: always
         environment:
-            POSTGRES_USER: admin
-            # POSTGRES_PASSWORD: 
-            POSTGRES_DB: spotify
-        volumes:
-            - ./:/docker-entrypoint-initdb.d
+            - POSTGRES_DB=playlist
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password} 
         ports:
             - 5432:5432
 

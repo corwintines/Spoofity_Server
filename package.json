@@ -11,7 +11,9 @@
     "test": "npm run test:once -- --watchAll",
     "build": "tsc",
     "start": "ts-node src",
-    "lint": "prettier --write src/**/*.ts && eslint --fix src/**/*.ts"
+    "predb:up": "docker build -t playlist_db:latest ./database",
+    "db:up": "docker-compose -f ./database/docker-compose.yml up",
+    "db:down": "docker-compose -f ./database/docker-compose.yml down"
   },
   "keywords": [],
   "repository": {
@@ -58,7 +60,6 @@
   },
   "lint-staged": {
     "*.ts": [
-      "prettier --write",
       "eslint --fix",
       "git add"
     ]

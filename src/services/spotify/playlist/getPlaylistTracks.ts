@@ -4,6 +4,7 @@ import {
   SpotifyPaging,
   SpotifyPlaylistTrack
 } from '../types';
+import { spotifyFetch } from '../fetch';
 
 interface GetSpotifyPlaylistTracksParameters {
   token: string;
@@ -22,7 +23,7 @@ export async function getSpotifyPlaylistTracks(
   url.searchParams.append('limit', args.limit.toString());
   url.searchParams.append('offset', args.offset.toString());
 
-  const result = await fetch(url.href, {
+  const result = await spotifyFetch(url.href, {
     method: 'GET',
     headers: {
       Authorization: `${args.tokenType} ${args.token}`,

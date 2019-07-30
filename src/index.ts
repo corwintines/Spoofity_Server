@@ -4,4 +4,6 @@ import registerRoutes from './routes';
 
 const app = express();
 registerRoutes(app);
-app.listen(SERVER_PORT);
+app.listen(SERVER_PORT, () => {
+  console.log('Listening on port', SERVER_PORT);
+});

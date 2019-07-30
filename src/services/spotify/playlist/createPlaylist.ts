@@ -1,5 +1,6 @@
 import { SPOTIFY_API_URL } from '../../../const';
 import { SpotifyTokenType, SpotifyPlaylist } from '../types';
+import { spotifyFetch } from '../fetch';
 
 interface CreateSpotifyPlaylistParameters {
   token: string;
@@ -11,7 +12,7 @@ interface CreateSpotifyPlaylistParameters {
 export async function createSpotifyPlaylist(
   args: CreateSpotifyPlaylistParameters
 ): Promise<SpotifyPlaylist> {
-  const result = await fetch(
+  const result = await spotifyFetch(
     `${SPOTIFY_API_URL}/users/${args.userId}/playlists`,
     {
       method: 'POST',
