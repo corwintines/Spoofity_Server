@@ -8,15 +8,17 @@ export const search: RequestHandler = async (req, res) => {
   try {
     const auth = await getRoomAuthorization(room);
 
-    const result = await querySpotifySearch({
-      limit,
-      offset,
-      query: q,
-      token: auth.token,
-      tokenType: auth.token_type
-    });
-
-    res.status(200).json(result);
+    switch (auth.service) {
+      case 'spotify': {
+        return await querySpotifySearch({
+          limit,
+          offset,
+          query: q,
+          token: auth.token,
+          tokenType: auth.token_type
+        });
+      }
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);

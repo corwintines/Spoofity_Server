@@ -6,13 +6,17 @@ interface GetSpotifyPlaylistParameters {
   token: string;
   tokenType: SpotifyTokenType;
   playlistId: string;
+  fields?: string[];
 }
 
 export async function getSpotifyPlaylist(
   args: GetSpotifyPlaylistParameters
 ): Promise<SpotifyPlaylist> {
   const url = new URL(`${SPOTIFY_API_URL}/playlists/${args.playlistId}/tracks`);
-  url.searchParams.append('fields', ['id', 'snapshot_id'].join(','));
+  url.searchParams.append(
+    'fields',
+    (!args.fields ? ['id', 'snapshot_id'] : args.fields).join(',')
+  );
   url.searchParams.append('market', 'from_token');
 
   const result = await spotifyFetch(url.href, {

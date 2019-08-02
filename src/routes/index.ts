@@ -6,7 +6,9 @@ import { spotifyLogin } from './spotify/login';
 
 // App
 import { search } from './search';
-import { addTrack } from './addTrack';
+import { addTrack } from './playlist/addTrack';
+import { getPlaylist } from './playlist/getPlaylist';
+import { getPlaylistTracks } from './playlist/getPlaylistTracks';
 
 export default function registerRoutes(app: Express) {
   // Spotify
@@ -18,5 +20,8 @@ export default function registerRoutes(app: Express) {
 
   // App
   app.get('/search', search);
-  app.post('/track', addTrack);
+
+  app.get('/playlist/:room', getPlaylist);
+  app.get('/playlist/:room/track', getPlaylistTracks);
+  app.post('/playlist/:room/track', addTrack);
 }
