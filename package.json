@@ -10,7 +10,7 @@
     "test:once": "jest",
     "test": "npm run test:once -- --watchAll",
     "build": "tsc",
-    "start": "ts-node src",
+    "start": "ts-node-dev src",
     "predb:up": "docker build -t playlist_db:latest ./database",
     "db:up": "docker-compose -f ./database/docker-compose.yml up",
     "db:down": "docker-compose -f ./database/docker-compose.yml down"
@@ -115,9 +115,11 @@
     "semantic-release": "^15.13.15",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
+    "ts-node-dev": "^1.0.0-pre.40",
     "typescript": "^3.5.1"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",

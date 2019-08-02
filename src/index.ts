@@ -1,9 +1,13 @@
 import * as express from 'express';
+import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
-import { SERVER_PORT } from './const';
+
 import registerRoutes from './routes';
 
+import { SERVER_PORT } from './const';
+
 const app = express();
+app.use(bodyParser.json());
 app.use(
   cors({
     origin: '*'

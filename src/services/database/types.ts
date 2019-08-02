@@ -1,10 +1,13 @@
+export type Service = 'spotify';
+
 export interface AuthSchema {
   auth_id: string;
-  service: string;
+  service: Service;
   token: string;
   token_type: string;
   refresh_token: string;
-  expiry_date: Date;
+  created_date: Date;
+  expires_in: number;
 }
 
 export interface RoomSchema {

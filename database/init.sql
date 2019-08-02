@@ -10,14 +10,19 @@ CREATE TABLE request (
   created_date timestamptz NOT NULL DEFAULT now()
 );
 
+CREATE INDEX request_request_id_idx ON request (request_id);
+
 CREATE TABLE auth (
   auth_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   service music_service NOT NULL,
   token text NOT NULL,
   token_type text NOT NULL,
   refresh_token text NOT NULL,
-  expiry_date timestamptz NOT NULL
+  created_date timestamptz NOT NULL NOT NULL DEFAULT now(),
+  expires_in integer NOT NULL
 );
+
+CREATE INDEX auth_auth_id_idx ON auth (auth_id);
 
 CREATE OR REPLACE FUNCTION generate_unique_room_code(arg_length integer) 
   RETURNS text
@@ -50,5 +55,9 @@ CREATE TABLE room (
   room_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   auth_id uuid NOT NULL REFERENCES auth(auth_id),
   room_code text UNIQUE NOT NULL,
-  service_playlist_id text NOT NULL
+  service_playlist_id text NOT NULL,
+  created_date timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE INDEX room_room_id_idx ON room (room_id);
+CREATE INDEX room_room_code_idx ON room (room_code);

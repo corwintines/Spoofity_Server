@@ -4,6 +4,8 @@ import {
   SPOTIFY_ACCOUNT_URL
 } from '../../../const';
 import { SpotifyToken } from '../types';
+import fetch from 'node-fetch';
+import { URLSearchParams } from 'url';
 
 export async function refreshSpotifyToken(refreshToken: string) {
   const params = new URLSearchParams();

@@ -5,14 +5,12 @@ import {
   getSpotifyUser
 } from '../../services/spotify';
 import { CLIENT_URL } from '../../const';
-import { transaction, querySingle, query } from '../../services/database';
+import { transaction, querySingle } from '../../services/database';
 
 export const spotifyLogin: RequestHandler = async (req, res) => {
   const { code, state } = req.query;
 
   try {
-    // TODO: check state is a valid requestId
-
     const result = await querySingle(
       `
       DELETE FROM request
@@ -38,13 +36,15 @@ export const spotifyLogin: RequestHandler = async (req, res) => {
           token,
           token_type,
           refresh_token,
-          expiry_date
+          created_date,
+          expires_in
         ) VALUES (
           'spotify',
           $1,
           $2,
           $3,
-          now() + CAST($4 || ' seconds' AS interval)
+          now(),
+          $4 
         )
         RETURNING auth_id;
       `,
