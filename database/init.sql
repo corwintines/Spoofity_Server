@@ -55,9 +55,31 @@ CREATE TABLE room (
   room_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   auth_id uuid NOT NULL REFERENCES auth(auth_id),
   room_code text UNIQUE NOT NULL,
-  service_playlist_id text NOT NULL,
+  service_data jsonb NOT NULL,
   created_date timestamptz NOT NULL DEFAULT now()
 );
 
 CREATE INDEX room_room_id_idx ON room (room_id);
 CREATE INDEX room_room_code_idx ON room (room_code);
+
+CREATE TABLE room_setting (
+  room_id uuid PRIMARY KEY DEFAULT uuid_generate_v4()
+);
+
+CREATE TABLE room_setting_voting (
+  voting_enabled boolean NOT NULL DEFAULT false,
+  voting_time_secs integer NOT NULL DEFAULT 30
+) INHERITS (room_setting);
+
+
+CREATE TABLE track (
+  track_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  room_id uuid NOT NULL REFERENCES room(room_id),
+  service_data jsonb NOT NULL,
+  created_date timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE TABLE track_vote (
+  vote_up_count integer NOT NULL DEFAULT 0,
+  vote_down_count integer NOT NULL DEFAULT 0
+) INHERITS (track);

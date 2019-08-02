@@ -95,14 +95,20 @@ export const spotifyLogin: RequestHandler = async (req, res) => {
         INSERT INTO room (
           auth_id,
           room_code,
-          service_playlist_id
+          service_data
         ) VALUES (
           $1,
           $2,
           $3
         )
       `,
-        [auth.auth_id, roomCode, playlist.id],
+        [
+          auth.auth_id,
+          roomCode,
+          JSON.stringify({
+            playlist_id: playlist.id
+          })
+        ],
         client
       );
 

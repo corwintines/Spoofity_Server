@@ -19,7 +19,7 @@ export async function getRoomAuthorization(room: string) {
       (now() + interval '1 minute' > auth.created_date + make_interval(secs := auth.expires_in)) as is_expired,
       room.room_id,
       room.room_code,
-      room.service_playlist_id
+      room.service_data
     FROM room
       JOIN auth USING (auth_id)
     WHERE room.room_code = $1

@@ -14,5 +14,9 @@ export interface RoomSchema {
   room_id: string;
   auth_id: string;
   room_code: string;
-  service_playlist_id: string;
+  service_data: object | SpotifyRoomData;
+}
+
+export interface SpotifyRoomData {
+  playlist_id: string;
 }
