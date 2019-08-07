@@ -13,8 +13,11 @@ export const PG_URL = process.env.PG_URL as string;
 
 export const CLIENT_URL = process.env.CLIENT_URL as string;
 
+export const JWT_SECRET = process.env.JWT_SECRET as string;
+
 // https://developer.spotify.com/documentation/general/guides/scopes/
 export const SPOTIFY_SCOPES = [
+  'user-read-email',
   'user-read-private',
   'playlist-read-private',
   'playlist-modify-private',
