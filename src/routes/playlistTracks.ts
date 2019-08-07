@@ -11,7 +11,9 @@ export const playlistTracks: RequestHandler = async (req, res) => {
     const result = await getSpotifyPlaylistTracks({
       token: auth.token,
       tokenType: auth.token_type,
-      playlistId: auth.service_playlist_id
+      playlistId: auth.service_playlist_id,
+      offset: 0,
+      limit: 100
     });
 
     res.status(200).json(result);
