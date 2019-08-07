@@ -3,7 +3,7 @@ import { addSpotifyPlaylistTracks } from '../services/spotify';
 import { getRoomAuthorization } from '../services/database/getRoomAuthorization';
 
 export const addTrack: RequestHandler = async (req, res) => {
-  const { room, track_uris } = req.query;
+  const { room, track_uris } = req.body;
 
   try {
     const auth = await getRoomAuthorization(room);
