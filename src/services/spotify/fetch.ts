@@ -2,10 +2,7 @@ import fetch from 'node-fetch';
 import { Response, RequestInit } from 'node-fetch';
 
 /** Helper fetch method to handle spotify errors and responses */
-export async function spotifyFetch(
-  url: string,
-  init?: RequestInit
-): Promise<Response> {
+export async function spotifyFetch(url: string, init?: RequestInit): Promise<Response> {
   const result = await fetch(url, init);
 
   // TODO: should we automatically retry, or return the response to the client

@@ -23,6 +23,7 @@ export interface SpotifyToken {
 export interface SpotifyUserProfile {
   id: string;
   uri: string;
+  email: string;
   display_name: string;
 }
 
@@ -114,6 +115,10 @@ export interface SpotifyPlaylistTrack {
 }
 
 export interface SpotifyPlaylist {
+  href: string;
   id: string;
+  name: string;
   snapshot_id: string;
+  uri: string;
+  type: 'playlist';
 }

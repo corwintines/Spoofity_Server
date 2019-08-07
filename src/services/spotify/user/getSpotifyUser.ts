@@ -7,9 +7,7 @@ interface GetSpotifyUserParameters {
   tokenType: SpotifyTokenType;
 }
 
-export async function getSpotifyUser(
-  args: GetSpotifyUserParameters
-): Promise<SpotifyUserProfile> {
+export async function getSpotifyUser(args: GetSpotifyUserParameters): Promise<SpotifyUserProfile> {
   const result = await spotifyFetch(`${SPOTIFY_API_URL}/me`, {
     method: 'GET',
     headers: {

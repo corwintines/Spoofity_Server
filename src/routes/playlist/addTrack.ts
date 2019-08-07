@@ -1,18 +1,18 @@
 import { RequestHandler } from 'express';
 import { addSpotifyPlaylistTracks } from '../../services/spotify';
-import { getRoomAuthorization } from '../../services/database/getRoomAuthorization';
-import { SpotifyRoomData } from '../../services/database/types';
+import { getPlaylistAuthorization } from '../../services/database/getPlaylistAuthorization';
+import { SpotifyPlaylistData } from '../../services/database/types';
 
-export const addTrack: RequestHandler = async (req, res) => {
-  const { room } = req.params;
+const addTrack: RequestHandler = async (req, res) => {
+  const { playlist } = req.params;
   const { track_uris } = req.query;
 
   try {
-    const auth = await getRoomAuthorization(room);
+    const auth = await getPlaylistAuthorization(playlist);
 
     switch (auth.service) {
       case 'spotify': {
-        const { playlist_id } = auth.service_data as SpotifyRoomData;
+        const { playlist_id } = auth.service_playlist_data as SpotifyPlaylistData;
 
         return await addSpotifyPlaylistTracks({
           playlistId: playlist_id,
@@ -26,3 +26,5 @@ export const addTrack: RequestHandler = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+
+export default [addTrack];

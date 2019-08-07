@@ -1,9 +1,4 @@
-import {
-  SPOTIFY_CLIENT_ID,
-  SPOTIFY_SECRET,
-  SPOTIFY_ACCOUNT_URL,
-  SERVER_URL
-} from '../../../const';
+import { SPOTIFY_CLIENT_ID, SPOTIFY_SECRET, SPOTIFY_ACCOUNT_URL, SERVER_URL } from '../../../const';
 import { SpotifyToken } from '../types';
 import fetch from 'node-fetch';
 import { URLSearchParams } from 'url';

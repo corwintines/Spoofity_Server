@@ -10,9 +10,7 @@ interface QuerySpotifySearchParameters {
   offset: number;
 }
 
-export async function querySpotifySearch(
-  args: QuerySpotifySearchParameters
-): Promise<SpotifySearchResult> {
+export async function querySpotifySearch(args: QuerySpotifySearchParameters): Promise<SpotifySearchResult> {
   const url = new URL(`${SPOTIFY_API_URL}/search`);
   url.searchParams.append('type', ['album', 'artist', 'track'].join(','));
   url.searchParams.append('market', 'from_token');

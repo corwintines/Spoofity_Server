@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express';
 import { querySpotifySearch } from '../services/spotify';
-import { getRoomAuthorization } from '../services/database/getRoomAuthorization';
+import { getPlaylistAuthorization } from '../services/database/getPlaylistAuthorization';
 
-export const search: RequestHandler = async (req, res) => {
-  const { room, q, offset, limit } = req.query;
+const search: RequestHandler = async (req, res) => {
+  const { code, q, offset, limit } = req.query;
 
   try {
-    const auth = await getRoomAuthorization(room);
+    const auth = await getPlaylistAuthorization(code);
 
     switch (auth.service) {
       case 'spotify': {
@@ -24,3 +24,5 @@ export const search: RequestHandler = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+
+export default [search];

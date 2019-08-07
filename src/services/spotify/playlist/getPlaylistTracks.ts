@@ -1,9 +1,5 @@
 import { SPOTIFY_API_URL } from '../../../const';
-import {
-  SpotifyTokenType,
-  SpotifyPaging,
-  SpotifyPlaylistTrack
-} from '../types';
+import { SpotifyTokenType, SpotifyPaging, SpotifyPlaylistTrack } from '../types';
 import { spotifyFetch } from '../fetch';
 
 interface GetSpotifyPlaylistTracksParameters {
@@ -19,10 +15,7 @@ export async function getSpotifyPlaylistTracks(
   args: GetSpotifyPlaylistTracksParameters
 ): Promise<SpotifyPaging<SpotifyPlaylistTrack>> {
   const url = new URL(`${SPOTIFY_API_URL}/playlists/${args.playlistId}/tracks`);
-  url.searchParams.append(
-    'fields',
-    (!args.fields ? [] : args.fields).join(',')
-  );
+  url.searchParams.append('fields', (!args.fields ? [] : args.fields).join(','));
   url.searchParams.append('market', 'from_token');
   url.searchParams.append('limit', args.limit.toString());
   url.searchParams.append('offset', args.offset.toString());
