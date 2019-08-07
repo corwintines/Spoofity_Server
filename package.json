@@ -50,13 +50,14 @@
           "argsIgnorePattern": "_"
         }
       ],
-      "prettier/prettier": "error"
+      "prettier/prettier": "warn"
     }
   },
   "prettier": {
     "tabWidth": 2,
     "singleQuote": true,
-    "arrowParens": "always"
+    "arrowParens": "always",
+    "printWidth": 120
   },
   "lint-staged": {
     "*.ts": [
