@@ -32,18 +32,6 @@ export async function getSpotifyPlaylistTracks(
   });
   const json = await result.json();
 
-  if (json.next) {
-    const next = await getSpotifyPlaylistTracks({
-      token: args.token,
-      tokenType: args.tokenType,
-      playlistId: args.playlistId,
-      offset: args.offset + 100,
-      limit: 100
-    });
-
-    json.items = [...json.items, ...next.items];
-  }
-
   if (!result.ok) {
     throw json;
   }
