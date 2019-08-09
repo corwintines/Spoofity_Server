@@ -3,7 +3,7 @@ import { getRoomAuthorization } from '../services/database/getRoomAuthorization'
 import { getSpotifyPlaylistTracks } from '../services/spotify/playlist/getPlaylistTracks';
 
 export const playlistTracks: RequestHandler = async (req, res) => {
-  const { room } = req.query;
+  const { room, offset } = req.query;
 
   try {
     const auth = await getRoomAuthorization(room);
@@ -12,7 +12,7 @@ export const playlistTracks: RequestHandler = async (req, res) => {
       token: auth.token,
       tokenType: auth.token_type,
       playlistId: auth.service_playlist_id,
-      offset: 0,
+      offset: offset,
       limit: 100
     });
 
