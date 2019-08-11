@@ -8,13 +8,14 @@ interface QuerySpotifySearchParameters {
   query: string;
   limit: number;
   offset: number;
+  searchType: string;
 }
 
 export async function querySpotifySearch(
   args: QuerySpotifySearchParameters
 ): Promise<SpotifySearchResult> {
   const url = new URL(`${SPOTIFY_API_URL}/search`);
-  url.searchParams.append('type', ['album', 'artist', 'track'].join(','));
+  url.searchParams.append('type', args.searchType);
   url.searchParams.append('market', 'from_token');
   url.searchParams.append('q', args.query);
   url.searchParams.append('limit', args.limit.toString()); // 1 - 50
