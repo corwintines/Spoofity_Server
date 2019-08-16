@@ -6,10 +6,11 @@ export const SPOTIFY_ACCOUNT_URL = 'https://accounts.spotify.com';
 export const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID as string;
 export const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET as string;
 
-export const SERVER_URL = process.env.SERVER_URL as string;
-export const SERVER_PORT = process.env.SERVER_PORT as string;
+export const SERVER_URL = process.env.URL || (process.env.SERVER_URL as string);
+export const SERVER_PORT =
+  process.env.PORT || (process.env.SERVER_PORT as string);
 
-export const PG_URL = process.env.PG_URL as string;
+export const DATABASE_URL = process.env.DATABASE_URL as string;
 
 export const CLIENT_URL = process.env.CLIENT_URL as string;
 

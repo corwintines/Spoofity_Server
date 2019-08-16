@@ -1,8 +1,8 @@
 import { Pool, PoolClient } from 'pg';
-import { PG_URL } from '../../const';
+import { DATABASE_URL } from '../../const';
 
 const pool = new Pool({
-  connectionString: PG_URL
+  connectionString: DATABASE_URL
 });
 
 type QueryFunction<T> = (client: PoolClient) => Promise<T>;

@@ -7,13 +7,14 @@
     "dist/"
   ],
   "scripts": {
-    "test:once": "jest",
+    "test:once": "npx jest",
     "test": "npm run test:once -- --watchAll",
-    "build": "tsc",
-    "start": "ts-node-dev src",
+    "build": "npx tsc",
+    "dev": "npx ts-node-dev src",
     "predb:up": "docker build -t playlist_db:latest ./database",
     "db:up": "docker-compose -f ./database/docker-compose.yml up",
-    "db:down": "docker-compose -f ./database/docker-compose.yml down"
+    "db:down": "docker-compose -f ./database/docker-compose.yml down",
+    "start": "node dist"
   },
   "keywords": [],
   "repository": {
@@ -22,6 +23,9 @@
   },
   "author": "Tyler Stewart",
   "license": "MIT",
+  "engines": {
+    "node": "12.x"
+  },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
