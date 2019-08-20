@@ -1,7 +1,6 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
-import passport from './services/passport';
 
 import registerRoutes from './routes';
 
@@ -14,7 +13,6 @@ app.use(
     origin: '*'
   })
 );
-app.use(passport.initialize());
 
 registerRoutes(app);
 

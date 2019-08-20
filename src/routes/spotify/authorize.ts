@@ -1,7 +1,8 @@
 import { RequestHandler } from 'express';
 import { URL } from 'url';
 import { SPOTIFY_ACCOUNT_URL, SPOTIFY_CLIENT_ID, SERVER_URL, SPOTIFY_SCOPES } from '../../const';
-import { querySingle } from '../../services/database';
+
+import { createAuthRequest } from '../../services/database/request/createAuthRequest';
 
 /** Create a spotify authorize url for a client to go to and authorize the app */
 const createSpotifyAuthorizeUrl = (requestId: string) => {
@@ -19,14 +20,8 @@ const createSpotifyAuthorizeUrl = (requestId: string) => {
  */
 const spotifyAuthorize: RequestHandler = async (_, res) => {
   try {
-    // TODO: generate a request ID and store it in the database
-    // This will ensure that auth requests originate from us
-    const request = await querySingle(`
-      INSERT INTO request (created_date) VALUES (now())
-      RETURNING request_id;
-    `);
-
-    const authorizeUrl = createSpotifyAuthorizeUrl(request.request_id);
+    const request = await createAuthRequest();
+    const authorizeUrl = createSpotifyAuthorizeUrl(request.auth_request_id);
 
     res.redirect(302, authorizeUrl);
   } catch (err) {

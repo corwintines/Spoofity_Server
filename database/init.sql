@@ -1,16 +1,15 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 SET TIME ZONE 'UTC';
 
-CREATE TYPE music_service AS ENUM (
-  'spotify'
-);
+-- Login
 
-CREATE TABLE request (
-  request_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE auth_request (
+  auth_request_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   created_date timestamptz NOT NULL DEFAULT now()
 );
+CREATE INDEX auth_request_auth_request_id_idx ON auth_request (auth_request_id);
 
-CREATE INDEX request_request_id_idx ON request (request_id);
+-- User
 
 CREATE TABLE user_profile (
   user_profile_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -18,30 +17,47 @@ CREATE TABLE user_profile (
 );
 CREATE INDEX user_profile_user_profile_id_idx ON user_profile (user_profile_id);
 
-
-CREATE TABLE user_service (
-  user_service_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+CREATE TABLE user_token (
+  user_token_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_profile_id uuid NOT NULL REFERENCES user_profile(user_profile_id),
-  service music_service NOT NULL,
-  service_user_data jsonb NOT NULL
-);
-CREATE INDEX user_service_user_service_id_idx ON user_service (user_service_id);
-CREATE INDEX user_service_user_profile_id_idx ON user_service (user_profile_id);
-
-CREATE TABLE user_auth (
-  user_auth_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_service_id uuid NOT NULL REFERENCES user_service(user_service_id),
-  token text NOT NULL,
-  token_type text NOT NULL,
   refresh_token text NOT NULL,
   created_date timestamptz NOT NULL DEFAULT now(),
-  expires_in integer NOT NULL
+  expiry_date timestamptz NOT NULL
 );
+CREATE INDEX user_token_user_profile_id_idx ON user_token (user_profile_id);
 
-CREATE INDEX user_auth_user_auth_id_idx ON user_auth (user_auth_id);
-CREATE INDEX user_auth_user_service_id_idx ON user_auth (user_service_id);
+-- External Service
 
-CREATE OR REPLACE FUNCTION generate_unique_playlist_code(arg_length integer) 
+CREATE TABLE external_account (
+  external_account_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_profile_id uuid REFERENCES user_profile(user_profile_id)
+);
+CREATE INDEX external_account_user_profile_id_idx ON external_account (user_profile_id);
+
+CREATE TABLE external_token (
+  external_token_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+  external_account_id uuid NOT NULL REFERENCES external_account(external_account_id)
+);
+CREATE INDEX external_token_external_account_id_idx ON external_token (external_account_id);
+
+-- Spotify Service
+
+CREATE TABLE spotify_account (
+  spotify_id text NOT NULL UNIQUE
+) INHERITS (external_account);
+-- CREATE INDEX spotify_account_spotify_id_idx ON spotify_account (spotify_id);
+
+CREATE TABLE spotify_token (
+  token_type text NOT NULL,
+  access_token text NOT NULL,
+  refresh_token text NOT NULL,
+  created_date timestamptz NOT NULL DEFAULT now(),
+  expiry_date timestamptz NOT NULL
+) INHERITS (external_token);
+
+-- Playlist
+
+CREATE OR REPLACE FUNCTION generate_unique_playlist_code(arg_length integer DEFAULT 4) 
   RETURNS text
 AS $$
 DECLARE
@@ -59,7 +75,7 @@ BEGIN
     SELECT NOT EXISTS(
       SELECT true
       FROM playlist
-      WHERE playlist_code = generated_code
+      WHERE code = generated_code
     ) INTO is_unique;
     EXIT WHEN is_unique;
   END LOOP;
@@ -70,35 +86,21 @@ $$ LANGUAGE plpgsql STABLE;
 
 CREATE TABLE playlist (
   playlist_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_auth_id uuid NOT NULL REFERENCES user_auth(user_auth_id),
-  playlist_name text NOT NULL,
-  playlist_code text UNIQUE NOT NULL,
-  service_playlist_data jsonb NOT NULL,
+  external_token_id uuid NOT NULL REFERENCES external_token(external_token_id),
+  code text NOT NULL UNIQUE DEFAULT generate_unique_playlist_code(),
   created_date timestamptz NOT NULL DEFAULT now()
 );
-
-CREATE INDEX playlist_playlist_id_idx ON playlist (playlist_id);
-CREATE INDEX playlist_user_auth_id_idx ON playlist (user_auth_id);
-CREATE INDEX playlist_playlist_code_idx ON playlist (playlist_code);
-
-CREATE TABLE playlist_setting (
-  playlist_id uuid PRIMARY KEY DEFAULT uuid_generate_v4()
-);
-
-CREATE TABLE playlist_setting_voting (
-  voting_enabled boolean NOT NULL DEFAULT false,
-  voting_time_secs integer NOT NULL DEFAULT 30
-) INHERITS (playlist_setting);
-
+CREATE INDEX playlist_external_token_id_idx ON playlist (external_token_id);
 
 CREATE TABLE track (
   track_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
   playlist_id uuid NOT NULL REFERENCES playlist(playlist_id),
-  service_track_data jsonb NOT NULL,
   created_date timestamptz NOT NULL DEFAULT now()
 );
+CREATE INDEX track_playlist_id_idx ON playlist (playlist_id);
 
-CREATE TABLE track_vote (
-  vote_up_count integer NOT NULL DEFAULT 0,
-  vote_down_count integer NOT NULL DEFAULT 0
+-- Spotify Track
+
+CREATE TABLE spotify_track (
+  spotify_track_id text NOT NULL
 ) INHERITS (track);

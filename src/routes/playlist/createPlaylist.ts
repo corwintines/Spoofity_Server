@@ -1,4 +1,3 @@
-import * as passport from 'passport';
 import { RequestHandler } from 'express';
 import { querySingle, transaction } from '../../services/database';
 import { createSpotifyPlaylist, getSpotifyUser } from '../../services/spotify';
@@ -77,4 +76,4 @@ const createPlaylist: RequestHandler = async (req, res) => {
   }
 };
 
-export default [passport.authenticate('jwt', { session: false }), createPlaylist];
+export default [createPlaylist];

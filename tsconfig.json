@@ -13,5 +13,8 @@
     ],
     "exclude": [
       "**/*.spec.ts"
+    ],
+    "files": [
+      "src/@types/express/index.d.ts"
     ]
   }

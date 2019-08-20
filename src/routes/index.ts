@@ -1,5 +1,8 @@
 import { Express } from 'express';
 
+// Middleware
+import { validateTokenMiddleware } from '../services/jwt';
+
 // Spotify
 import spotifyAuthorize from './spotify/authorize';
 import spotifyLogin from './spotify/login';
@@ -20,10 +23,10 @@ export default function registerRoutes(app: Express) {
   // $$$$$
 
   // App
-  app.get('/search', ...search);
+  app.get('/search', validateTokenMiddleware, ...search);
 
-  app.post('/playlist', ...createPlaylist);
-  app.get('/playlist/:code', ...getPlaylist);
-  app.get('/playlist/:code/track', ...getPlaylistTracks);
-  app.post('/playlist/:code/track', ...addTrack);
+  app.post('/playlist', validateTokenMiddleware, ...createPlaylist);
+  app.get('/playlist/:code', validateTokenMiddleware, ...getPlaylist);
+  app.get('/playlist/:code/track', validateTokenMiddleware, ...getPlaylistTracks);
+  app.post('/playlist/:code/track', validateTokenMiddleware, ...addTrack);
 }

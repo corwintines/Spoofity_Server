@@ -1,4 +1,3 @@
-import * as passport from 'passport';
 import { RequestHandler } from 'express';
 import { transaction, query } from '../../services/database';
 import { PlaylistSchema, UserServiceSchema } from '../../services/database/types';
@@ -35,4 +34,4 @@ const listPlaylists: RequestHandler = async (req, res) => {
   }
 };
 
-export default [passport.authenticate('jwt', { session: false }), listPlaylists];
+export default [listPlaylists];

@@ -104,8 +104,6 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node": "^12.0.5",
     "@types/node-fetch": "^2.3.7",
-    "@types/passport": "^1.0.0",
-    "@types/passport-jwt": "^3.0.1",
     "@types/pg": "^7.4.14",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
@@ -129,8 +127,6 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.0",
-    "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
     "pg": "^7.12.0"
   }
 }

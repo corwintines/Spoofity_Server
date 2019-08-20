@@ -1,9 +1,46 @@
 export type Service = 'spotify';
 
+export interface AuthRequestSchema {
+  auth_request_id: string;
+  created_date: Date;
+}
+
 export interface UserProfileSchema {
   user_profile_id: string;
   email: string;
 }
+
+export interface UserTokenSchema {
+  user_token_id: string;
+  user_profile_id: string;
+  refresh_token: string;
+  created_date: Date;
+  expiry_date: Date;
+}
+
+export interface ExternalAccountSchema {
+  external_account_id: string;
+  user_profile_id: string;
+}
+
+export interface ExternalToken {
+  external_token_id: string;
+  external_account_id: string;
+}
+
+export interface SpotifyAccountSchema extends ExternalAccountSchema {
+  spotify_id: string;
+}
+
+export interface SpotifyTokenSchema extends ExternalToken {
+  token_type: string;
+  access_token: string;
+  refresh_token: string;
+  created_date: Date;
+  expiry_date: Date;
+}
+
+// Old
 
 export interface UserServiceSchema {
   user_service_id: string;

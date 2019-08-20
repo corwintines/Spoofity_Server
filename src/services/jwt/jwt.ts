@@ -1,14 +1,15 @@
-import { sign, verify } from 'jsonwebtoken';
+import { sign, verify, SignOptions, VerifyOptions } from 'jsonwebtoken';
 
-import { JWT_SECRET, CLIENT_URL } from '../../../const';
+import { JWT_SECRET, JWT_ISSUER, CLIENT_URL } from '../../const';
 
-export async function signJWT<T extends object = object>(payload: T) {
+export async function signJWT<T extends object = object>(payload: T, options: SignOptions = {}) {
   return await new Promise<string>((resolve, reject) => {
     sign(
       payload,
       JWT_SECRET,
       {
-        issuer: 'server',
+        ...options,
+        issuer: JWT_ISSUER,
         audience: CLIENT_URL
       },
       (err, token) => {
@@ -19,13 +20,14 @@ export async function signJWT<T extends object = object>(payload: T) {
   });
 }
 
-export async function verifyJWT<T extends object = object>(token: string) {
+export async function verifyJWT<T extends object = object>(token: string, options: VerifyOptions = {}) {
   return await new Promise<T>((resolve, reject) => {
     verify(
       token,
       JWT_SECRET,
       {
-        issuer: 'server',
+        ...options,
+        issuer: JWT_ISSUER,
         audience: CLIENT_URL
       },
       (err, payload) => {
