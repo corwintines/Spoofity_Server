@@ -3,7 +3,7 @@ import { querySpotifySearch } from '../services/spotify';
 import { getRoomAuthorization } from '../services/database/getRoomAuthorization';
 
 export const search: RequestHandler = async (req, res) => {
-  const { room, q, offset, limit } = req.query;
+  const { room, q, offset, limit, searchType } = req.query;
 
   try {
     const auth = await getRoomAuthorization(room);
@@ -13,7 +13,8 @@ export const search: RequestHandler = async (req, res) => {
       offset,
       query: q,
       token: auth.token,
-      tokenType: auth.token_type
+      tokenType: auth.token_type,
+      searchType
     });
 
     res.status(200).json(result);
